@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\v1;
 
-use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -18,15 +20,19 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        $product_id = Product::create($request->toArray());
+        $product = Product::find($product_id);
+        $product->addMedia($request->image)->toMediaCollection();
+
+        return response(['message' => 'Registrado correctamente']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
         //
     }
